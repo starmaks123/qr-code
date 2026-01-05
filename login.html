@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafeID - Emergency Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body::-webkit-scrollbar { display: none; }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+    .logo-glow { filter: drop-shadow(0 0 15px rgba(220, 38, 38, 0.2)); }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center min-h-screen font-sans">
+
+  <div class="w-full max-w-sm bg-white min-h-screen shadow-lg flex flex-col">
+
+    <main id="login-page" class="p-8 flex flex-col items-center justify-center flex-grow space-y-12">
+      
+      <div class="flex flex-col items-center space-y-4">
+        <div class="flex items-center gap-3 scale-125 mb-4">
+          <div class="w-16 h-16 bg-white border-[4px] border-red-600 rounded-2xl flex items-center justify-center shadow-lg transform rotate-[-5deg]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <path d="M9 12l2 2 4-4"></path>
+            </svg>
+          </div>
+          <h1 class="text-5xl font-black text-gray-900 tracking-tighter">Safe<span class="text-red-600">ID</span></h1>
+        </div>
+        <p class="text-gray-500 font-medium text-center px-4 leading-relaxed">
+          Akses cepat informasi medis Anda saat kondisi darurat.
+        </p>
+      </div>
+
+      <div class="w-full space-y-4 pt-4">
+        <div class="space-y-1.5">
+          <input type="text" id="loginUser" placeholder="Nama Pengguna / Email" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-red-500 outline-none transition-all shadow-sm" />
+        </div>
+        <div class="space-y-1.5">
+          <input type="password" id="loginPass" placeholder="Password" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-red-500 outline-none transition-all shadow-sm" />
+        </div>
+        
+        <button onclick="handleLogin()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-red-200 hover:bg-red-700 active:scale-95 transition-all">
+          Masuk ke Akun
+        </button>
+      </div>
+
+      <div class="text-center pt-2">
+        <p class="text-sm text-gray-400">Belum memiliki akun?</p>
+        <button onclick="showPage('register-page')" class="text-red-600 font-extrabold hover:underline mt-1 text-base">
+          Daftar Akun SafeID Baru
+        </button>
+      </div>
+    </main>
+
+    <section id="register-page" class="hidden p-8 space-y-6">
+      <div class="flex items-center gap-2 mb-4">
+        <button onclick="showPage('login-page')" class="p-2 bg-gray-100 rounded-full">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+        <h2 class="text-2xl font-bold text-gray-800">Daftar Akun</h2>
+      </div>
+      <div class="space-y-4">
+        <input type="text" placeholder="Nama Lengkap" class="w-full px-4 py-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-red-500" />
+        <input type="email" placeholder="Email" class="w-full px-4 py-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-red-500" />
+        <input type="password" placeholder="Buat Password" class="w-full px-4 py-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-red-500" />
+    </div>
+      <button onclick="showPage('profile-page')" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg">Aktifkan Sekarang</button>
+    </section>
+
+    <section id="profile-page" class="hidden p-6 space-y-6">
+      <div class="flex items-center justify-between border-b pb-4">
+        <h2 class="text-xl font-bold">Edit Profil Darurat</h2>
+        <button onclick="showPage('login-page')" class="text-red-500 text-sm font-bold bg-red-50 px-3 py-1 rounded-full">Keluar</button>
+      </div>
+
+      <div class="flex flex-col items-center gap-3">
+        <div class="w-28 h-28 rounded-full border-4 border-white shadow-xl overflow-hidden bg-gray-200">
+          <img id="avatarPreview" src="https://via.placeholder.com/150" class="w-full h-full object-cover">
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewImage(event)">
+        <button onclick="document.getElementById('avatarInput').click()" class="bg-red-600 text-white px-5 py-2 rounded-full text-xs font-bold shadow-md">Ubah Foto</button>
+      </div>
+
+      <div class="space-y-5">
+        <div>
+          <label class="text-sm font-bold text-gray-700 ml-1">Nama Lengkap <span class="text-red-500">*</span></label>
+          <input id="inName" class="w-full mt-1.5 px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-red-500 transition-all" placeholder="Masukkan Nama Lengkap" />
+        </div>
+        
+        <div>
+          <label class="text-sm font-bold text-gray-700 ml-1">Golongan Darah <span class="text-red-500">*</span></label>
+          <input id="inBlood" class="w-full mt-1.5 px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-red-500 transition-all" placeholder="Contoh: A" />
+        </div>
+
+        <div>
+          <label class="text-sm font-bold text-gray-700 ml-1">Alergi Yang Dimiliki</label>
+          <input id="inAllergy" class="w-full mt-1.5 px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-red-500 transition-all" placeholder="Contoh: Alergi Makanan" />
+        </div>
+
+        <div>
+          <label class="text-sm font-bold text-gray-700 ml-1">Penyakit Yang Dimiliki</label>
+          <select id="inDisease" class="w-full mt-1.5 px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-red-500 transition-all appearance-none">
+            <option value="">Pilih Penyakit</option>
+            <option value="Asma">Asma</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Hipertensi">Hipertensi</option>
+          </select>
+        </div>
+      </div> <div class="pt-2">
+        <a href="kontak.html" class="flex items-center justify-between bg-gray-50 border border-dashed border-gray-300 p-4 rounded-2xl hover:bg-gray-100 transition-all group no-underline">
+          <div class="flex items-center gap-3">
+            <div class="bg-red-100 p-2 rounded-lg text-red-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-gray-800">Tambahkan Kontak Darurat</p>
+              <p class="text-xs text-gray-500">Hubungkan nomor keluarga/kerabat</p>
+            </div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-red-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <button onclick="saveProfile()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-xl active:scale-95 transition-all">
+        Simpan Profil Darurat
+      </button>
+    </section>
+  </div>
+
+  <script>
+    function showPage(pageId) {
+      ['login-page', 'register-page', 'profile-page'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(pageId).classList.remove('hidden');
+      window.scrollTo(0, 0);
+    }
+
+    function handleLogin() {
+      // Simulasi login langsung masuk ke profil
+      showPage('profile-page');
+    }
+
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function() {
+        document.getElementById('avatarPreview').src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function previewMed(event) {
+      const reader = new FileReader();
+      reader.onload = function() {
+        const img = document.getElementById('medPreview');
+        img.src = reader.result;
+        img.classList.remove('hidden');
+        document.getElementById('medIcon').classList.add('hidden');
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function saveProfile() {
+      const data = {
+        name: document.getElementById('inName').value,
+        blood: document.getElementById('inBlood').value,
+        allergy: document.getElementById('inAllergy').value,
+        disease: document.getElementById('inDisease').value,
+        photo: document.getElementById('avatarPreview').src
+      };
+      localStorage.setItem('safeid_data', JSON.stringify(data));
+      alert('Profil Anda Berhasil Disimpan!');
+    }
+
+    window.onload = function() {
+      const saved = localStorage.getItem('safeid_data');
+      if (saved) {
+        const d = JSON.parse(saved);
+        document.getElementById('inName').value = d.name || '';
+        document.getElementById('inBlood').value = d.blood || '';
+        document.getElementById('inAllergy').value = d.allergy || '';
+        document.getElementById('inDisease').value = d.disease || '';
+        if(d.photo) document.getElementById('avatarPreview').src = d.photo;
+      }
+    }
+  </script>
+</body>
+</html>

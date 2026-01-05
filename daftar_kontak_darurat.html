@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Kontak Keluarga - SafeID</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-xl relative flex flex-col">
+        
+        <div class="absolute top-4 right-4 z-50">
+            <div class="flex items-center gap-2 text-red-600 font-bold">
+                <div class="w-8 h-8 bg-white border-2 border-red-600 rounded-lg flex items-center justify-center shadow-sm transform rotate-[-5deg]">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <span class="text-xl tracking-tighter italic">Safe<span class="text-gray-900">ID</span></span>
+            </div>
+        </div>
+
+        <div class="h-2 bg-red-600 w-full"></div>
+
+        <div class="px-6 py-12">
+            <h1 class="text-xl font-bold text-red-600">Kontak Keluarga</h1>
+        </div>
+
+        <div class="px-6 py-4 flex-grow">
+            <h2 id="kontakCount" class="text-sm font-bold text-gray-800 mb-6 uppercase tracking-wider">
+                List Kontak Keluarga (0)
+            </h2>
+            
+            <div id="listKontakContainer" class="space-y-1">
+                <p class="text-center text-gray-400 text-sm py-10 italic">Memuat kontak...</p>
+            </div>
+        </div>
+
+        <div class="p-6">
+            <a href="profil_darurat.html" class="block w-full text-center py-3 border-2 border-dashed border-red-300 rounded-2xl text-red-600 font-bold hover:bg-red-50 no-underline transition-all">
+                + kembali ke profil</a>
+            <a href="kontak.html" class="block w-full text-center py-3 border-2 border-dashed border-red-300 rounded-2xl text-red-600 font-bold hover:bg-red-50 no-underline transition-all">
+                + Tambah Kontak Lainnya
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Gunakan nama kunci yang konsisten: 'daftarKontakSafeID'
+        const STORAGE_KEY = 'daftarKontakSafeID';
+
+        function muatDaftarKontak() {
+            const container = document.getElementById('listKontakContainer');
+            const countLabel = document.getElementById('kontakCount');
+            
+            // Ambil data terbaru
+            const daftarLokal = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            
+            // Update jumlah di label
+            countLabel.innerText = `List Kontak Keluarga (${daftarLokal.length})`;
+
+            if (daftarLokal.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10">
+                        <p class="text-gray-400 text-sm">Belum ada kontak keluarga yang ditambahkan.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = ''; 
+
+            daftarLokal.forEach((kontak, index) => {
+                // Pastikan format nomor benar untuk WA
+                const cleanNumber = kontak.nomor ? kontak.nomor.replace(/\D/g, '') : '';
+                
+                const item = `
+                    <div class="flex items-center justify-between py-4 border-b border-gray-100 animate-fade-in">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-600 font-bold uppercase shadow-sm">
+                                ${kontak.nama ? kontak.nama.charAt(0) : '?'}
+                            </div>
+                            <div>
+                                <p class="text-gray-900 font-bold leading-tight">${kontak.nama || 'Tanpa Nama'}</p>
+                                <p class="text-xs text-gray-500 font-medium tracking-wide">${kontak.hubungan || 'Keluarga'}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <a href="https://wa.me/${cleanNumber}" target="_blank" class="hover:scale-110 transition-transform p-2 bg-green-50 rounded-full">
+                                <img src="image/logo wa.jpg" alt="WA" class="w-6 h-6 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/733/733585.png'">
+                            </a>
+                            
+                            <button onclick="hapusKontak(${index})" class="p-2 text-gray-300 hover:text-red-500 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += item;
+            });
+        }
+
+        function hapusKontak(index) {
+            if (confirm("Hapus kontak ini?")) {
+                let daftarLokal = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                daftarLokal.splice(index, 1);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(daftarLokal));
+                muatDaftarKontak(); // Segarkan tampilan
+            }
+        }
+
+        // Panggil fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', muatDaftarKontak);
+    </script>
+</body>
+</html>
