@@ -1,57 +1,37 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code - SafeID</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #f9fafb; }
-        /* Animasi halus saat memuat halaman */
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Aktivasi</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- QR Code Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 </head>
-<body class="font-sans antialiased flex items-center justify-center min-h-screen p-6">
 
-    <div class="max-w-sm w-full bg-white rounded-3xl shadow-2xl overflow-hidden fade-in border border-gray-100">
-        
-        <div class="bg-red-600 p-8 flex flex-col items-center">
-            <div class="w-16 h-16 bg-white border-2 border-red-600 rounded-xl flex items-center justify-center shadow-lg transform rotate-[-5deg] mb-4">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                    <path d="M9 12l2 2 4-4"></path>
-                </svg>
-            </div>
-            <h1 class="text-3xl font-black text-white tracking-tighter italic">Safe<span class="text-gray-200">ID</span></h1>
-            <p class="text-red-100 text-xs font-bold uppercase tracking-widest mt-2">Emergency Identity</p>
-        </div>
+<body class="min-h-screen flex items-center justify-center bg-gray-100">
 
-        <div class="p-10 flex flex-col items-center">
-    <div class="w-64 h-64 bg-white border-2 border-dashed border-red-200 rounded-3xl mb-6 flex items-center justify-center p-4 shadow-sm">
-        <img 
-            src="image/barcode.png" 
-            alt="QR Code SafeID" 
-            class="max-w-full max-h-full object-contain"
-        >
-    </div>
-</div>
+  <div class="bg-white p-6 rounded-xl shadow-lg text-center space-y-4">
+    <h1 class="text-xl font-bold">Scan QR Code</h1>
 
-            <div class="text-center space-y-2 mb-8">
-                <h2 class="text-xl font-bold text-gray-800 uppercase tracking-tight">Scan QR Code</h2>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Tunjukkan kode ini kepada penyelamat korban dalam keadaan darurat untuk akses cepat profil medis Anda.
-                </p>
-            </div>
-        <div class="bg-gray-50 py-4 text-center">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
-                &copy; 2026 SafeID - Protection in Your Pocket
-            </p>
-        </div>
-    </div>
+    <!-- Tempat QR -->
+    <div id="qrcode" class="flex justify-center"></div>
+
+    <p class="text-sm text-gray-500">
+      Scan untuk aktivasi akun
+    </p>
+  </div>
+
+  <script>
+    new QRCode(document.getElementById("qrcode"), {
+      text: "https://starmaks123.github.io/qr-code/aktivasi-akun.html",
+      width: 200,
+      height: 200
+    });
+  </script>
 
 </body>
 </html>
